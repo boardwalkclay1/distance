@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Proximity App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <h1>Proximity Pulse</h1>
+
+  <div id="modeToggle">
+    <button onclick="setMode('board')">Board</button>
+    <button onclick="setMode('skates')">Skates</button>
+  </div>
+
+  <button id="scanBtn" onclick="scan()">Scan for ESP32</button>
+
+  <div id="status">Waiting...</div>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>
