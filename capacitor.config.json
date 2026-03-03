@@ -1,0 +1,6 @@
+{
+  "appId": "com.clayvonte.proximity",
+  "appName": "ProximityApp",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}
