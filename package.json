@@ -1,0 +1,14 @@
+{
+  "name": "proximity-app",
+  "version": "1.0.0",
+  "description": "ESP32 Proximity App using Capacitor + HTML/JS",
+  "main": "index.js",
+  "scripts": {},
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@capacitor/core": "latest",
+    "@capacitor/cli": "latest",
+    "@capacitor-community/bluetooth-le": "latest"
+  }
+}
