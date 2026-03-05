@@ -1,23 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Proximity App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b0d2a" />
+  <title>Proximity Pulse</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-  <h1>Proximity Pulse</h1>
 
-  <div id="modeToggle">
-    <button onclick="setMode('board')">Board</button>
-    <button onclick="setMode('skates')">Skates</button>
+  <!-- Alert toast -->
+  <div id="alertToast">🚨 Board left behind!</div>
+
+  <div class="app-wrapper">
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="planet">🪐</div>
+      <h1>Proximity Pulse</h1>
+      <p>ESP32 · Bluetooth · Offline</p>
+    </header>
+
+    <!-- Notification permission -->
+    <div class="card">
+      <div class="card-title">🔔 Notifications</div>
+      <button id="notifBtn" onclick="requestNotifications()">
+        Enable Alerts
+      </button>
+    </div>
+
+    <!-- Mode selector -->
+    <div class="card">
+      <div class="card-title">📡 Tracking Mode</div>
+      <div class="mode-grid">
+        <button class="mode-btn active" id="mode-board" onclick="setMode('board')">
+          <span class="icon">🛹</span>Board
+        </button>
+        <button class="mode-btn" id="mode-skates" onclick="setMode('skates')">
+          <span class="icon">⛸️</span>Skates
+        </button>
+      </div>
+    </div>
+
+    <!-- Scan button -->
+    <button id="scanBtn" onclick="toggleScan()">
+      🔍 Scan for Beacon
+    </button>
+
+    <!-- Proximity status -->
+    <div class="card">
+      <div class="card-title">📶 Proximity</div>
+
+      <div class="proximity-ring-wrap">
+        <div class="proximity-ring" id="proximityRing">
+          <span class="ring-icon" id="ringIcon">❓</span>
+        </div>
+      </div>
+
+      <div id="statusText">Tap "Scan for Beacon" to start</div>
+      <div id="rssiValue"></div>
+
+      <!-- Signal strength bar -->
+      <div class="distance-bar-wrap" style="margin-top:18px;">
+        <div class="distance-bar-label">
+          <span>Signal strength</span>
+          <span id="barPct">–</span>
+        </div>
+        <div class="distance-bar-track">
+          <div class="distance-bar-fill" id="signalBar"></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="app-footer">Works offline · Pairs with DistanceBeacon ESP32</p>
   </div>
 
-  <button id="scanBtn" onclick="scan()">Scan for ESP32</button>
-
-  <div id="status">Waiting...</div>
-
-  <script type="module" src="main.js"></script>
+  <script src="main.js"></script>
+  <script>
+    // Register service worker for offline support
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    }
+  </script>
 </body>
 </html>
