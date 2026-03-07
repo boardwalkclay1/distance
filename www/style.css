@@ -1,22 +1,358 @@
+/* ── Reset & base ──────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Space background with animated stars ──────────────── */
 body {
-  background: #0d0f1a;
-  color: white;
-  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at 50% 0%, #1a0533 0%, #0b0d2a 55%, #05060f 100%);
+  color: #e8e8ff;
+  font-family: 'Segoe UI', Arial, sans-serif;
   text-align: center;
-  padding: 40px;
+  overflow-x: hidden;
 }
 
-button {
-  padding: 12px 20px;
-  margin: 10px;
-  border-radius: 8px;
+/* Star layers */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::before {
+  background-image:
+    radial-gradient(1px 1px at 10% 15%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 25% 40%, #ccd 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 38% 8%,  #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 30%, #aaf 0%, transparent 100%),
+    radial-gradient(1px 1px at 70% 5%,  #fff 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 80% 22%, #ddf 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 48%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 15% 72%, #ccf 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 60%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 62% 80%, #aaf 0%, transparent 100%),
+    radial-gradient(1px 1px at 5%  55%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 95% 70%, #ddf 0%, transparent 100%);
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
+
+body::after {
+  background-image:
+    radial-gradient(1px 1px at 18% 90%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 33% 75%, #aaf 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 50% 92%, #ddf 0%, transparent 100%),
+    radial-gradient(1px 1px at 75% 85%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 88% 95%, #ccf 0%, transparent 100%),
+    radial-gradient(1px 1px at 3%  20%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 98% 35%, #aaf 0%, transparent 100%);
+  animation: twinkle 6s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes twinkle {
+  0%   { opacity: 0.6; }
+  100% { opacity: 1;   }
+}
+
+/* ── Layout wrapper ─────────────────────────────────────── */
+.app-wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 32px 20px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── Header ─────────────────────────────────────────────── */
+.app-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.app-header .planet {
+  font-size: 52px;
+  line-height: 1;
+  filter: drop-shadow(0 0 14px #a855f7);
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0);    }
+  50%       { transform: translateY(-8px); }
+}
+
+.app-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #a855f7 0%, #7c3aed 40%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.04em;
+}
+
+.app-header p {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ── Cards ──────────────────────────────────────────────── */
+.card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  border-radius: 18px;
+  padding: 22px 20px;
+  backdrop-filter: blur(8px);
+}
+
+.card-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #a78bfa;
+  margin-bottom: 14px;
+}
+
+/* ── Mode toggle ────────────────────────────────────────── */
+.mode-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.mode-btn {
+  padding: 12px 10px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(168, 85, 247, 0.3);
+  background: rgba(124, 58, 237, 0.12);
+  color: #c4b5fd;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.mode-btn .icon { font-size: 1.5rem; }
+
+.mode-btn:hover {
+  background: rgba(124, 58, 237, 0.28);
+  border-color: #a855f7;
+  color: #fff;
+}
+
+.mode-btn.active {
+  background: linear-gradient(135deg, #7c3aed 0%, #3b82f6 100%);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 18px rgba(124, 58, 237, 0.55);
+}
+
+/* ── Scan button ────────────────────────────────────────── */
+#scanBtn {
+  width: 100%;
+  padding: 15px;
+  border-radius: 14px;
   border: none;
-  background: #1e293b;
-  color: white;
-  font-size: 16px;
+  background: linear-gradient(135deg, #7c3aed 0%, #3b82f6 100%);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.45);
 }
 
-#status {
-  margin-top: 40px;
-  font-size: 20px;
+#scanBtn:hover  { opacity: 0.9; transform: translateY(-1px); }
+#scanBtn:active { transform: translateY(1px); }
+#scanBtn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* ── Notification permission button ──────────────────────── */
+#notifBtn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1.5px solid rgba(168, 85, 247, 0.35);
+  background: rgba(168, 85, 247, 0.1);
+  color: #c4b5fd;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+#notifBtn:hover {
+  background: rgba(168, 85, 247, 0.22);
+  color: #fff;
+  border-color: #a855f7;
+}
+
+#notifBtn.granted {
+  border-color: rgba(52, 211, 153, 0.4);
+  background: rgba(52, 211, 153, 0.08);
+  color: #6ee7b7;
+  cursor: default;
+}
+
+/* ── Proximity display ───────────────────────────────────── */
+.proximity-ring-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.proximity-ring {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  border: 4px solid rgba(168, 85, 247, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: border-color 0.5s, box-shadow 0.5s;
+}
+
+.proximity-ring .ring-icon { font-size: 3rem; }
+
+.proximity-ring.near {
+  border-color: #34d399;
+  box-shadow: 0 0 24px rgba(52, 211, 153, 0.5), inset 0 0 24px rgba(52, 211, 153, 0.08);
+}
+
+.proximity-ring.close {
+  border-color: #facc15;
+  box-shadow: 0 0 24px rgba(250, 204, 21, 0.5), inset 0 0 24px rgba(250, 204, 21, 0.08);
+}
+
+.proximity-ring.far {
+  border-color: #f97316;
+  box-shadow: 0 0 24px rgba(249, 115, 22, 0.5), inset 0 0 24px rgba(249, 115, 22, 0.08);
+  animation: pulse-far 1s ease-in-out infinite;
+}
+
+.proximity-ring.lost {
+  border-color: #ef4444;
+  box-shadow: 0 0 28px rgba(239, 68, 68, 0.6), inset 0 0 28px rgba(239, 68, 68, 0.1);
+  animation: pulse-lost 0.6s ease-in-out infinite;
+}
+
+@keyframes pulse-far {
+  0%, 100% { box-shadow: 0 0 24px rgba(249, 115, 22, 0.5); }
+  50%       { box-shadow: 0 0 40px rgba(249, 115, 22, 0.8); }
+}
+
+@keyframes pulse-lost {
+  0%, 100% { box-shadow: 0 0 28px rgba(239, 68, 68, 0.6); }
+  50%       { box-shadow: 0 0 50px rgba(239, 68, 68, 0.9); }
+}
+
+/* ── Status text ─────────────────────────────────────────── */
+#statusText {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #e8e8ff;
+  line-height: 1.4;
+  min-height: 2.8em;
+  transition: color 0.4s;
+}
+
+#rssiValue {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+/* ── Distance bars ───────────────────────────────────────── */
+.distance-bar-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.distance-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin-bottom: 2px;
+}
+
+.distance-bar-track {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.distance-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #7c3aed, #3b82f6);
+  width: 0%;
+  transition: width 0.6s ease, background 0.5s;
+}
+
+/* ── Alert toast ─────────────────────────────────────────── */
+#alertToast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-120px);
+  z-index: 100;
+  background: linear-gradient(135deg, #7c3aed, #3b82f6);
+  color: #fff;
+  padding: 14px 24px;
+  border-radius: 14px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  max-width: 90vw;
+  text-align: center;
+}
+
+#alertToast.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+#alertToast.danger {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+}
+
+/* ── Scanning pulse dot ──────────────────────────────────── */
+.scan-pulse {
+  display: inline-block;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #a855f7;
+  margin-right: 8px;
+  vertical-align: middle;
+  animation: blink 0.9s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.15; }
+}
+
+/* ── Footer ──────────────────────────────────────────────── */
+.app-footer {
+  font-size: 0.7rem;
+  color: #334155;
+  letter-spacing: 0.06em;
+  margin-top: 8px;
 }
